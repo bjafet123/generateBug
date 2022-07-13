@@ -1,0 +1,39 @@
+{
+	"name": "generatebug",
+	"version": "0.0.1",
+	"description": "Throws an exception to test error handler",
+	"main": "index.js",
+	"directories": {
+		"lib": "lib",
+		"test": "test"
+	},
+	"scripts": {
+		"test": "node test/generateBugTest.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bjafet123/generateBug.git.git"
+	},
+	"keywords": [
+		"nodejs",
+		"OIH",
+		"rabbitmq",
+		"producer",
+		"throw exception"
+	],
+	"author": "Jafet Malvaez",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/bjafet123/generateBug.git/issues"
+	},
+	"homepage": "https://github.com/bjafet123/requestHandler#readme",
+	"dependencies": {
+		"@openintegrationhub/ferryman": "^2.1.0",
+		"@openintegrationhub/ferryman-1-7": "npm:@openintegrationhub/ferryman@^1.7.1",
+		"amqplib": "^0.10.0",
+		"bunyan": "^1.8.15",
+		"bunyan-format": "^0.2.1",
+		"dotenv": "^16.0.1",
+		"express": "^4.18.1"
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"title": "OIH Bug creator",
+	"description": "OIH component that creates an error to test error handler",
+	"version": "0.0.1",
+	"docsUrl": "https://github.com/bjafet123/mysql-connection/blob/main/README.md",
+	"buildType": "docker",
+	"credentials": {},
+	"triggers": {
+		"generateBug": {
+			"title": "Creates an error to test the handler.",
+			"main": "./lib/triggers/generateBug.js"
+		}
+	}
+}
