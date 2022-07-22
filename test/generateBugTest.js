@@ -16,7 +16,7 @@ app.post('/', async (req, res) => {
         let snapshot = {};
         msg = req.body;
 		
-		await rabbitmq.prepareErrorQueue();
+		await rabbitmq.errorQueueListener();
 		
 		if (!data) {
             res.status(401).json('Error missing data property');
