@@ -1,19 +1,22 @@
 require('dotenv').config();
 const log = require('../helpers/logger');
-const rabbitmq = require('../helpers/rabbit');
+const rabbitmq = require('rabbitmqcg-nxg-oih');
 const express = require('express');
 const app = express();
-
 
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
 app.post('/', async (req, res) => {
+	let msg;
 	try {
 		const {data} = req.body;
         const {cfg} = req.body;
         let snapshot = {};
+        msg = req.body;
+		
+		await rabbitmq.prepareErrorQueue();
 		
 		if (!data) {
             res.status(401).json('Error missing data property');
@@ -24,12 +27,14 @@ app.post('/', async (req, res) => {
             return;
         }
 		
-		throw new Error("Testing error created..." +  JSON.stringify(data));
+		throw new Error("Testing error created..." + JSON.stringify(data));
 		
 	} catch (e) {
         log.error(`ERROR: ${e}`);
-        await rabbitmq.producerMessage(e);
+        const payload = JSON.stringify(msg);
+		await rabbitmq.producerErrorMessage(payload, e);
         res.status(500).json(e);
+        throw new Error(e.toString());
     }
 });
 
