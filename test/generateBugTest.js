@@ -1,6 +1,6 @@
 require('dotenv').config();
 const log = require('../helpers/logger');
-const rabbitmq = require('rabbitmqcg-nxg-oih');
+const msgbck = require('msgbrocker-nxg-cg');
 const express = require('express');
 const app = express();
 
@@ -16,7 +16,7 @@ app.post('/', async (req, res) => {
         let snapshot = {};
         msg = req.body;
 		
-		await rabbitmq.errorQueueListener();
+		await msgbck.errorQueueListener();
 		
 		if (!data) {
             res.status(401).json('Error missing data property');
@@ -32,7 +32,7 @@ app.post('/', async (req, res) => {
 	} catch (e) {
         log.error(`ERROR: ${e}`);
         const payload = JSON.stringify(msg);
-		await rabbitmq.producerErrorMessage(payload, e);
+		await msgbck.producerErrorMessage(payload, e);
         res.status(500).json(e);
         throw new Error(e.toString());
     }
