@@ -1,6 +1,6 @@
 require('dotenv').config();
-const log = require('../helpers/logger');
-const msgbck = require('msgbrocker-nxg-cg');
+const {constants, log} = require('utils-nxg-cg');
+const msgbck = require('msgbroker-nxg-cg');
 const express = require('express');
 const app = express();
 
@@ -19,11 +19,11 @@ app.post('/', async (req, res) => {
 		await msgbck.errorQueueListener();
 		
 		if (!data) {
-            res.status(401).json('Error missing data property');
+            res.status(401).json(`${constants.ERROR_PROPERTY} data`);
             return;
         }
         if (!cfg) {
-            res.status(401).json('Error missing cfg property');
+            res.status(401).json(`${constants.ERROR_PROPERTY} cfg`);
             return;
         }
 		
