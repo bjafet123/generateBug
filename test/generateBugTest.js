@@ -1,6 +1,7 @@
 require('dotenv').config();
 const {constants, log} = require('utils-nxg-cg');
-const msgbck = require('msgbroker-nxg-cg');
+const {producerErrorMessage} = require('msgbroker-nxg-cg');
+const msgbrk = require('msgbroker-nxg-cg');
 const express = require('express');
 const app = express();
 
@@ -16,7 +17,7 @@ app.post('/', async (req, res) => {
         let snapshot = {};
         msg = req.body;
 		
-		await msgbck.errorQueueListener();
+		await msgbrk.errorQueueListener();
 		
 		if (!data) {
             res.status(401).json(`${constants.ERROR_PROPERTY} data`);
@@ -27,14 +28,15 @@ app.post('/', async (req, res) => {
             return;
         }
 		
+		await msgbrk.producerMessage('Hola','myQueue');
+		
 		throw new Error("Testing error created..." + JSON.stringify(data));
 		
 	} catch (e) {
         log.error(`ERROR: ${e}`);
-        const payload = JSON.stringify(msg);
-		await msgbck.producerErrorMessage(payload, e);
+		await producerErrorMessage(msg, e);
         res.status(500).json(e);
-        throw new Error(e.toString());
+        //throw new Error(e.toString());
     }
 });
 
