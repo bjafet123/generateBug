@@ -1,7 +1,8 @@
 require('dotenv').config();
 const {constants, log} = require('utils-nxg-cg');
 const {producerErrorMessage} = require('msgbroker-nxg-cg');
-const msgbrk = require('msgbroker-nxg-cg');
+//const msgbrk = require('msgbroker-nxg-cg');
+const {loging_elastic, objectLevels} = require('loging-elastic-cg-lib');
 const express = require('express');
 const app = express();
 
@@ -17,7 +18,9 @@ app.post('/', async (req, res) => {
         let snapshot = {};
         msg = req.body;
 		
-		await msgbrk.errorQueueListener();
+		await loging_elastic(data, objectLevels.info);
+		
+		//await msgbrk.errorQueueListener();
 		
 		if (!data) {
             res.status(401).json(`${constants.ERROR_PROPERTY} data`);
@@ -28,13 +31,14 @@ app.post('/', async (req, res) => {
             return;
         }
 		
-		await msgbrk.producerMessage('Hola','myQueue');
+		//await msgbrk.producerMessage('Hola','myQueue');
 		
 		throw new Error("Testing error created..." + JSON.stringify(data));
 		
 	} catch (e) {
+		await loging_elastic(e, objectLevels.error);
         log.error(`ERROR: ${e}`);
-		await producerErrorMessage(msg, e);
+		await producerErrorMessage(msg, e.toString());
         res.status(500).json(e);
         //throw new Error(e.toString());
     }
